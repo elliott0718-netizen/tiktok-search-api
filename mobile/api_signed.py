@@ -24,10 +24,7 @@ mcp_security = TransportSecuritySettings(
     ],
 )
 
-mcp_app = mcp.streamable_http_app(
-    streamable_http_path="/",
-    transport_security=mcp_security,
-)
+mcp_app = mcp.streamable_http_app()
 
 original_lifespan = app.router.lifespan_context
 
