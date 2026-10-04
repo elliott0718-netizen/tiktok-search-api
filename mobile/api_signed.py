@@ -35,7 +35,7 @@ async def lifespan(app_instance):
             yield
 
 app.router.lifespan_context = lifespan
-app.mount("/mcp", mcp_app)
+app.mount("/", mcp_app)
 def main() -> None:
     parser = argparse.ArgumentParser(description='TikTok signed search API')
     parser.add_argument('--config', default=_CONFIG)
