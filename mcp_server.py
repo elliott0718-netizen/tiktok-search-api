@@ -1,10 +1,22 @@
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 import requests
 
 mcp = FastMCP(
     "TikTok Search",
     stateless_http=True,
     json_response=True,
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=[
+            "tiktok-search-api-bsez.onrender.com",
+            "tiktok-search-api-bsez.onrender.com:*",
+        ],
+        allowed_origins=[
+            "https://tiktok-search-api-bsez.onrender.com",
+            "https://tiktok-search-api-bsez.onrender.com:*",
+        ],
+    ),
 )
 
 API_URL = "https://tiktok-search-api-bsez.onrender.com/search"
