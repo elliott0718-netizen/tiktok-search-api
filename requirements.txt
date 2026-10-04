@@ -6,4 +6,4 @@ fastapi
 uvicorn
 pydantic>=2
 pika
-mcp
+mcp<2
