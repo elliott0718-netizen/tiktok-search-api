@@ -1,7 +1,11 @@
 from mcp.server.fastmcp import FastMCP
 import requests
 
-mcp = FastMCP("TikTok Search")
+mcp = FastMCP(
+    "TikTok Search",
+    stateless_http=True,
+    json_response=True,
+)
 
 API_URL = "https://tiktok-search-api-bsez.onrender.com/search"
 
