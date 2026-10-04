@@ -10,7 +10,24 @@ from tiktoksearch.api import create_app
 _CONFIG = os.environ.get('TTAPI_SIGNED_CONFIG', 'mobile/config_signed.yaml')
 app = create_app(_CONFIG)
 
-mcp_app = mcp.streamable_http_app()
+from mcp.server.transport_security import TransportSecuritySettings
+
+mcp_security = TransportSecuritySettings(
+    enable_dns_rebinding_protection=True,
+    allowed_hosts=[
+        "tiktok-search-api-bsez.onrender.com",
+        "tiktok-search-api-bsez.onrender.com:*",
+    ],
+    allowed_origins=[
+        "https://tiktok-search-api-bsez.onrender.com",
+        "https://tiktok-search-api-bsez.onrender.com:*",
+    ],
+)
+
+mcp_app = mcp.streamable_http_app(
+    streamable_http_path="/",
+    transport_security=mcp_security,
+)
 
 original_lifespan = app.router.lifespan_context
 
