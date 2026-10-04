@@ -3,11 +3,25 @@ import argparse
 import logging
 import os
 import sys
+import contextlib
+from mcp_server import mcp
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from tiktoksearch.api import create_app
 _CONFIG = os.environ.get('TTAPI_SIGNED_CONFIG', 'mobile/config_signed.yaml')
 app = create_app(_CONFIG)
 
+mcp_app = mcp.streamable_http_app()
+
+original_lifespan = app.router.lifespan_context
+
+@contextlib.asynccontextmanager
+async def lifespan(app_instance):
+    async with original_lifespan(app_instance):
+        async with mcp.session_manager.run():
+            yield
+
+app.router.lifespan_context = lifespan
+app.mount("/mcp", mcp_app)
 def main() -> None:
     parser = argparse.ArgumentParser(description='TikTok signed search API')
     parser.add_argument('--config', default=_CONFIG)
