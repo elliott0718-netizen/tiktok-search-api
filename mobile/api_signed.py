@@ -35,6 +35,22 @@ async def lifespan(app_instance):
             yield
 
 app.router.lifespan_context = lifespan
+@app.get("/tiktok-test")
+def tiktok_test(query: str = "海軍陸戰隊", limit: int = 50):
+    import requests
+
+    response = requests.post(
+        "https://tiktok-search-api-bsez.onrender.com/search",
+        json={
+            "fan_out": 8,
+            "limit": limit,
+            "query": query,
+            "type": "keyword",
+        },
+        timeout=60,
+    )
+    response.raise_for_status()
+    return response.json()
 app.mount("/", mcp_app)
 def main() -> None:
     parser = argparse.ArgumentParser(description='TikTok signed search API')
