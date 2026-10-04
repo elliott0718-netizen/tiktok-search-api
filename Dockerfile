@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mobile/tiktoksearch /app/tiktoksearch
 COPY mobile/api_signed.py /app/api_signed.py
 COPY mcp_server.py /app/mcp_server.py
+COPY mobile/config_direct.yaml /app/config/config_direct.yaml
 
 RUN useradd --create-home --uid 10001 appuser && chown -R appuser:appuser /app
 USER appuser
